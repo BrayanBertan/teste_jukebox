@@ -13,7 +13,7 @@ class UsuarioRepository {
 
   void setHash(String hash) {
     if (kIsWeb) {
-      hash = '875ad27222b843f9a1691d989d6ddca0';
+      hash = 'e756ec6a76b74e49b019a53696dba120';
       return;
     }
     SharedPreferences.getInstance().then((prefs) {
@@ -23,14 +23,14 @@ class UsuarioRepository {
 
   void getHash() {
     if (kIsWeb) {
-      hash = '875ad27222b843f9a1691d989d6ddca0';
+      hash = 'e756ec6a76b74e49b019a53696dba120';
       return;
     }
     SharedPreferences.getInstance().then((prefs) {
       if (prefs.containsKey('hash'))
         hash = prefs.getString('hash');
       else {
-        hash = '875ad27222b843f9a1691d989d6ddca0';
+        hash = 'e756ec6a76b74e49b019a53696dba120';
         setHash(hash);
       }
     });
@@ -51,6 +51,7 @@ class UsuarioRepository {
   }
 
   Future<void> postUsuario(Usuario usuario) async {
+    print(usuario.senha);
     String endpoint = '$_BASE_URL/$hash/$TABELA';
     print(endpoint);
     try {
@@ -62,6 +63,7 @@ class UsuarioRepository {
 
   Future<void> putUsuario(Usuario usuario) async {
     String endpoint = '$_BASE_URL/$hash/$TABELA/${usuario.id}';
+    print(endpoint);
     try {
       final response = await Dio().put(endpoint, data: usuario.tojson());
     } on DioError {
@@ -70,7 +72,8 @@ class UsuarioRepository {
   }
 
   Future<void> deleteUsuario(String id) async {
-    String endpoint = '$_BASE_URL/$hash/$TABELA/$id';
+    print(id);
+    String endpoint = '$_BASE_URL/$hash/$TABELA/${id.trim()}';
     try {
       final response = await Dio().delete(endpoint);
     } on DioError {
@@ -81,8 +84,8 @@ class UsuarioRepository {
   Future<Usuario> checkLogin(String email, String senha) async {
     List<Usuario> response = await getAllUsuarios();
     final usuarios = response.where((usuario) =>
-        usuario.email == email &&
-        usuario.senha == md5.convert(utf8.encode(senha)).toString());
+        usuario.email.trim() == email.trim() &&
+        usuario.senha.trim() == md5.convert(utf8.encode(senha)).toString());
     if (usuarios.length > 0)
       return usuarios.first;
     else

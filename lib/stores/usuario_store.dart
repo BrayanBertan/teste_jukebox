@@ -11,7 +11,10 @@ abstract class _UsuarioStore with Store {
   _UsuarioStore() {
     usuarioRepository = Modular.get<UsuarioRepository>();
     loading = false;
-    getAllUsuarios();
+    usuarioList = ObservableList<Usuario>();
+    usuarioListClone = ObservableList<Usuario>();
+    pesquisa = '';
+    getAllUsuarios().then((value) => pesquisar());
   }
 
   UsuarioRepository usuarioRepository;
@@ -21,6 +24,25 @@ abstract class _UsuarioStore with Store {
 
   @observable
   ObservableList<Usuario> usuarioList;
+  @observable
+  ObservableList<Usuario> usuarioListClone;
+
+  @observable
+  String pesquisa;
+
+  @action
+  void setPesquisa(String value) => pesquisa = value;
+
+  @action
+  void pesquisar() {
+    final response = List<Usuario>.from(usuarioList);
+    usuarioListClone.clear();
+    usuarioListClone.addAll(response);
+    print(pesquisa);
+    if (pesquisa.trim().isNotEmpty)
+      usuarioListClone.retainWhere((usuario) =>
+          usuario.nome.toUpperCase().startsWith(pesquisa.toUpperCase()));
+  }
 
   @action
   Future<void> getAllUsuarios() async {

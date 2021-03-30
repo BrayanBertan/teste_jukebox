@@ -18,6 +18,9 @@ class AppModule extends Module {
     ChildRoute('/', child: (_, __) => SplashScreen()),
     ChildRoute('/login', child: (_, __) => LoginPage()),
     ChildRoute('/home', child: (_, __) => HomePage()),
-    ChildRoute('/cadastro', child: (_, __) => CadastroPage()),
+    ChildRoute(
+      '/cadastro',
+      child: (_, args) => CadastroPage(usuario: args.data),
+    ),
   ];
 }

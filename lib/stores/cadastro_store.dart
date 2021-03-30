@@ -14,14 +14,16 @@ part 'cadastro_store.g.dart';
 class CadastroStore = _CadastroStore with _$CadastroStore;
 
 abstract class _CadastroStore with Store {
-  _CadastroStore(Usuario param) {
+  _CadastroStore({this.usuario}) {
     usuarioRepository = Modular.get<UsuarioRepository>();
     loading = false;
-    if (param == null)
-      usuario = Usuario();
-    else
-      usuario = param;
-
+    if (usuario != null) {
+      nome = usuario.nome;
+      email = usuario.email;
+      dataNascimento = usuario.dataNascimento;
+      senha = usuario.senha;
+      senhaConfirmacao = usuario.senha;
+    }
     emailExistenteError = null;
   }
 
@@ -125,11 +127,12 @@ abstract class _CadastroStore with Store {
   Future<void> saveUsuario({VoidCallback onSucess, VoidCallback onFail}) async {
     loading = true;
     try {
+      if (usuario == null) usuario = Usuario();
       usuario.nome = nome;
       usuario.email = email;
       usuario.senha = md5.convert(utf8.encode(senha)).toString();
       usuario.dataNascimento = dataNascimento;
-
+      print('id ${usuario.id}');
       if (usuario.id == null) {
         final response = await usuarioRepository.checkEmail(usuario.email);
 
@@ -152,8 +155,9 @@ abstract class _CadastroStore with Store {
   }
 
   void deleteUsuario(String id) async {
+    print(id);
     try {
-      if (usuario == null) await usuarioRepository.deleteUsuario(id);
+      await usuarioRepository.deleteUsuario(id);
     } catch (erro) {
       print(erro);
     }

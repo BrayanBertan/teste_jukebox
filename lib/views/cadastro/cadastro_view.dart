@@ -11,11 +11,13 @@ import 'package:teste_jukebox/stores/cadastro_store.dart';
 import 'package:teste_jukebox/views/widgets/custom_snackbar.dart';
 import 'package:teste_jukebox/views/widgets/dialog_trocar_hash.dart';
 import 'package:teste_jukebox/views/widgets/loading_view.dart';
+import 'package:teste_jukebox/views/widgets/logout.dart';
 
 class CadastroPage extends StatelessWidget {
   Usuario usuario;
   CadastroStore cadastroStore;
-  CadastroPage({this.usuario}) : cadastroStore = CadastroStore(usuario);
+  CadastroPage({this.usuario})
+      : cadastroStore = CadastroStore(usuario: usuario);
   @override
   Widget build(BuildContext context) {
     bool isSmallDevice = ResponsiveWrapper.of(context).isMobile ||
@@ -24,6 +26,9 @@ class CadastroPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Teste Jokebox'),
+        actions: [
+          usuario == null ? Container() : LogoutIconButton(),
+        ],
         centerTitle: true,
       ),
       body: Stack(
@@ -122,7 +127,7 @@ class CadastroPage extends StatelessWidget {
                               format: DateFormat('dd/MM/yyyy'),
                               onChanged: cadastroStore.setDataNascimento,
                               initialValue:
-                                  cadastroStore.usuario.dataNascimento != null
+                                  cadastroStore.usuario?.dataNascimento != null
                                       ? cadastroStore.usuario.dataNascimento
                                       : DateTime.now(),
                               decoration: InputDecoration(
@@ -134,7 +139,7 @@ class CadastroPage extends StatelessWidget {
                                     locale: Locale('pt', 'BR'),
                                     context: context,
                                     currentDate: cadastroStore
-                                                .usuario.dataNascimento !=
+                                                .usuario?.dataNascimento !=
                                             null
                                         ? cadastroStore.usuario.dataNascimento
                                         : DateTime.now(),

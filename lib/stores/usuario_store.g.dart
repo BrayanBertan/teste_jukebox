@@ -39,6 +39,36 @@ mixin _$UsuarioStore on _UsuarioStore, Store {
     });
   }
 
+  final _$usuarioListCloneAtom = Atom(name: '_UsuarioStore.usuarioListClone');
+
+  @override
+  ObservableList<Usuario> get usuarioListClone {
+    _$usuarioListCloneAtom.reportRead();
+    return super.usuarioListClone;
+  }
+
+  @override
+  set usuarioListClone(ObservableList<Usuario> value) {
+    _$usuarioListCloneAtom.reportWrite(value, super.usuarioListClone, () {
+      super.usuarioListClone = value;
+    });
+  }
+
+  final _$pesquisaAtom = Atom(name: '_UsuarioStore.pesquisa');
+
+  @override
+  String get pesquisa {
+    _$pesquisaAtom.reportRead();
+    return super.pesquisa;
+  }
+
+  @override
+  set pesquisa(String value) {
+    _$pesquisaAtom.reportWrite(value, super.pesquisa, () {
+      super.pesquisa = value;
+    });
+  }
+
   final _$getAllUsuariosAsyncAction =
       AsyncAction('_UsuarioStore.getAllUsuarios');
 
@@ -47,11 +77,38 @@ mixin _$UsuarioStore on _UsuarioStore, Store {
     return _$getAllUsuariosAsyncAction.run(() => super.getAllUsuarios());
   }
 
+  final _$_UsuarioStoreActionController =
+      ActionController(name: '_UsuarioStore');
+
+  @override
+  void setPesquisa(String value) {
+    final _$actionInfo = _$_UsuarioStoreActionController.startAction(
+        name: '_UsuarioStore.setPesquisa');
+    try {
+      return super.setPesquisa(value);
+    } finally {
+      _$_UsuarioStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void pesquisar() {
+    final _$actionInfo = _$_UsuarioStoreActionController.startAction(
+        name: '_UsuarioStore.pesquisar');
+    try {
+      return super.pesquisar();
+    } finally {
+      _$_UsuarioStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
   @override
   String toString() {
     return '''
 loading: ${loading},
-usuarioList: ${usuarioList}
+usuarioList: ${usuarioList},
+usuarioListClone: ${usuarioListClone},
+pesquisa: ${pesquisa}
     ''';
   }
 }

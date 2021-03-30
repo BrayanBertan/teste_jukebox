@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:crypto/crypto.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -67,6 +70,7 @@ abstract class _LoginStore with Store {
   @action
   Future<void> checkLogin(
       {@required VoidCallback onSucess, @required VoidCallback onFail}) async {
+    print(senha);
     loading = true;
     try {
       usuario = await usuarioRepository.checkLogin(email, senha);
@@ -91,11 +95,12 @@ abstract class _LoginStore with Store {
     loading = true;
     try {
       usuario = await usuarioRepository.checkEmail(email);
-      print(usuario);
 
       if (usuario == null)
         onFail();
       else {
+        usuario.senha = md5.convert(utf8.encode(senha)).toString();
+
         await usuarioRepository.putUsuario(usuario);
         senha = null;
         onSucess();
@@ -105,4 +110,7 @@ abstract class _LoginStore with Store {
     }
     loading = false;
   }
+
+  @action
+  logout() => usuario = Usuario();
 }
