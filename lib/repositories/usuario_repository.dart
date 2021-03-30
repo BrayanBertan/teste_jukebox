@@ -6,11 +6,11 @@ import 'package:teste_jukebox/models/usuario.dart';
 
 class UsuarioRepository {
   static const String _BASE_URL = "https://crudcrud.com/api";
-  static const String HASH = "4d75bd94be32484187b209b07fc05966";
+  static String hash = "4d75bd94be32484187b209b07fc05966";
   static const String TABELA = "usuarios";
 
   Future<List<Usuario>> getAllUsuarios() async {
-    String endpoint = '$_BASE_URL/$HASH/$TABELA';
+    String endpoint = '$_BASE_URL/$hash/$TABELA';
 
     print(endpoint);
     try {
@@ -24,7 +24,7 @@ class UsuarioRepository {
   }
 
   Future<void> postUsuario(Usuario usuario) async {
-    String endpoint = '$_BASE_URL/$HASH/$TABELA';
+    String endpoint = '$_BASE_URL/$hash/$TABELA';
     print(endpoint);
     try {
       final response = await Dio().post(endpoint, data: usuario.tojson());
@@ -34,7 +34,7 @@ class UsuarioRepository {
   }
 
   Future<void> putUsuario(Usuario usuario) async {
-    String endpoint = '$_BASE_URL/$HASH/$TABELA';
+    String endpoint = '$_BASE_URL/$hash/$TABELA/${usuario.id}';
     try {
       final response = await Dio().put(endpoint, data: usuario.tojson());
     } on DioError {
@@ -43,7 +43,7 @@ class UsuarioRepository {
   }
 
   Future<void> deleteUsuario(String id) async {
-    String endpoint = '$_BASE_URL/$HASH/$TABELA/$id';
+    String endpoint = '$_BASE_URL/$hash/$TABELA/$id';
     try {
       final response = await Dio().delete(endpoint);
     } on DioError {
@@ -62,8 +62,12 @@ class UsuarioRepository {
       return null;
   }
 
-  Future<bool> checkEmail(String email) async {
+  Future<Usuario> checkEmail(String email) async {
     List<Usuario> response = await getAllUsuarios();
-    return response.where((usuario) => usuario.email == email).length > 0;
+    final usuarios = response.where((usuario) => usuario.email == email);
+    if (usuarios.length > 0)
+      return usuarios.first;
+    else
+      return null;
   }
 }

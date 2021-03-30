@@ -1,3 +1,5 @@
+import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:mobx/mobx.dart';
 import 'package:teste_jukebox/helpers/extensions.dart';
@@ -47,16 +49,60 @@ abstract class _LoginStore with Store {
   }
 
   @computed
-  Function get isFormValid => emailValid ? checkLogin : null;
+  bool get senhaValid => senha != null && senha.length > 5;
+
+  @computed
+  Function get isFormValid => emailValid && senhaValid ? checkLogin : null;
+
+  @computed
+  String get senhaError {
+    if (senha == null || senhaValid)
+      return null;
+    else if (senha.trim().isEmpty)
+      return 'Campo obrigatório';
+    else
+      return 'Senha precisa ter pelo menos 6 caracteres';
+  }
 
   @action
-  Future<void> checkLogin() async {
+  Future<void> checkLogin(
+      {@required VoidCallback onSucess, @required VoidCallback onFail}) async {
+    loading = true;
     try {
       usuario = await usuarioRepository.checkLogin(email, senha);
       print(usuario);
-      if (usuario == null) loginError = 'Credencias inválidas';
+
+      if (usuario == null) {
+        loginError = 'Credencias inválidas';
+        onFail();
+      } else {
+        loginError = null;
+        onSucess();
+      }
     } catch (erro) {
       print(erro);
     }
+    loading = false;
+  }
+
+  @action
+  Future<void> changePassword(
+      {@required VoidCallback onSucess, @required VoidCallback onFail}) async {
+    loading = true;
+    try {
+      usuario = await usuarioRepository.checkEmail(email);
+      print(usuario);
+
+      if (usuario == null)
+        onFail();
+      else {
+        await usuarioRepository.putUsuario(usuario);
+        senha = null;
+        onSucess();
+      }
+    } catch (erro) {
+      print(erro);
+    }
+    loading = false;
   }
 }

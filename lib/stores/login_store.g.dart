@@ -23,12 +23,26 @@ mixin _$LoginStore on _LoginStore, Store {
       (_$emailErrorComputed ??= Computed<String>(() => super.emailError,
               name: '_LoginStore.emailError'))
           .value;
+  Computed<bool> _$senhaValidComputed;
+
+  @override
+  bool get senhaValid =>
+      (_$senhaValidComputed ??= Computed<bool>(() => super.senhaValid,
+              name: '_LoginStore.senhaValid'))
+          .value;
   Computed<Function> _$isFormValidComputed;
 
   @override
   Function get isFormValid =>
       (_$isFormValidComputed ??= Computed<Function>(() => super.isFormValid,
               name: '_LoginStore.isFormValid'))
+          .value;
+  Computed<String> _$senhaErrorComputed;
+
+  @override
+  String get senhaError =>
+      (_$senhaErrorComputed ??= Computed<String>(() => super.senhaError,
+              name: '_LoginStore.senhaError'))
           .value;
 
   final _$loadingAtom = Atom(name: '_LoginStore.loading');
@@ -94,8 +108,19 @@ mixin _$LoginStore on _LoginStore, Store {
   final _$checkLoginAsyncAction = AsyncAction('_LoginStore.checkLogin');
 
   @override
-  Future<void> checkLogin() {
-    return _$checkLoginAsyncAction.run(() => super.checkLogin());
+  Future<void> checkLogin(
+      {@required VoidCallback onSucess, @required VoidCallback onFail}) {
+    return _$checkLoginAsyncAction
+        .run(() => super.checkLogin(onSucess: onSucess, onFail: onFail));
+  }
+
+  final _$changePasswordAsyncAction = AsyncAction('_LoginStore.changePassword');
+
+  @override
+  Future<void> changePassword(
+      {@required VoidCallback onSucess, @required VoidCallback onFail}) {
+    return _$changePasswordAsyncAction
+        .run(() => super.changePassword(onSucess: onSucess, onFail: onFail));
   }
 
   final _$_LoginStoreActionController = ActionController(name: '_LoginStore');
@@ -131,7 +156,9 @@ senha: ${senha},
 loginError: ${loginError},
 emailValid: ${emailValid},
 emailError: ${emailError},
-isFormValid: ${isFormValid}
+senhaValid: ${senhaValid},
+isFormValid: ${isFormValid},
+senhaError: ${senhaError}
     ''';
   }
 }

@@ -121,9 +121,10 @@ abstract class _CadastroStore with Store {
   Future<void> saveUsuario() async {
     try {
       loading = true;
-      if (await usuarioRepository.checkEmail(email)) {
+      final response = await usuarioRepository.checkEmail(email);
+      if (response != null)
         emailExistenteError = 'Email já cadastrado';
-      } else {
+       else {
         usuario.nome = nome;
         usuario.email = email;
         usuario.senha = md5.convert(utf8.encode(senha)).toString();
