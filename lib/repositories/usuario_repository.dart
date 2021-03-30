@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:crypto/crypto.dart';
 import 'package:dio/dio.dart';
 import 'package:teste_jukebox/models/usuario.dart';
 
@@ -37,5 +40,29 @@ class UsuarioRepository {
     } on DioError {
       return Future.error('Erro ao atualizar usuario');
     }
+  }
+
+  Future<void> deleteUsuario(String id) async {
+    String endpoint = '$_BASE_URL/$HASH/$TABELA/$id';
+    try {
+      final response = await Dio().delete(endpoint);
+    } on DioError {
+      return Future.error('Erro ao deletar usuario');
+    }
+  }
+
+  Future<bool> checkLogin(String email, String senha) async {
+    List<Usuario> response = await getAllUsuarios();
+    return response
+            .where((usuario) =>
+                usuario.email == email &&
+                usuario.senha == md5.convert(utf8.encode(senha)).toString())
+            .length >
+        0;
+  }
+
+  Future<bool> checkEmail(String email) async {
+    List<Usuario> response = await getAllUsuarios();
+    return response.where((usuario) => usuario.email == email).length > 0;
   }
 }
