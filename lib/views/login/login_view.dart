@@ -133,28 +133,33 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                             SizedBox(
                                 height: 45,
-                                child: ElevatedButton(
-                                  onPressed: loginStore.isFormValid
-                                      ? () {
-                                          loginStore.checkLogin(
-                                              onSucess: () => Modular.to
-                                                  .pushReplacementNamed(
-                                                      '/home'),
-                                              onFail: () => CustomSnackBar(
-                                                  context,
-                                                  loginStore.loginError,
-                                                  Colors.red));
-                                        }
-                                      : null,
-                                  child: Text(
-                                    'Entrar',
-                                    style: TextStyle(fontSize: 20),
-                                  ),
-                                  style: ElevatedButton.styleFrom(
-                                    primary: Color.fromRGBO(203, 100, 100, 1),
-                                    onSurface:
-                                        Color.fromRGBO(203, 100, 100, 0.8),
-                                  ),
+                                child: Observer(
+                                  builder: (context) {
+                                    return ElevatedButton(
+                                      onPressed: loginStore.isFormValid
+                                          ? () {
+                                              loginStore.checkLogin(
+                                                  onSucess: () => Modular.to
+                                                      .pushReplacementNamed(
+                                                          '/home'),
+                                                  onFail: () => CustomSnackBar(
+                                                      context,
+                                                      loginStore.loginError,
+                                                      Colors.red));
+                                            }
+                                          : null,
+                                      child: Text(
+                                        'Entrar',
+                                        style: TextStyle(fontSize: 20),
+                                      ),
+                                      style: ElevatedButton.styleFrom(
+                                        primary:
+                                            Color.fromRGBO(203, 100, 100, 1),
+                                        onSurface:
+                                            Color.fromRGBO(203, 100, 100, 0.8),
+                                      ),
+                                    );
+                                  },
                                 ))
                           ],
                         ),

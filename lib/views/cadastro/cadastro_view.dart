@@ -175,32 +175,40 @@ class CadastroPage extends StatelessWidget {
                             ),
                             SizedBox(
                                 height: 45,
-                                child: ElevatedButton(
-                                  onPressed: cadastroStore.isFormValid
-                                      ? () {
-                                          cadastroStore.saveUsuario(
-                                            onSucess: () {
-                                              Modular.to.pushReplacementNamed(
-                                                  '/home');
-                                            },
-                                            onFail: () {
-                                              CustomSnackBar(
-                                                  context,
-                                                  'Esse email já está em uso',
-                                                  Colors.red);
-                                            },
-                                          );
-                                        }
-                                      : null,
-                                  child: Text(
-                                    usuario == null ? 'Cadastrar' : 'Salvar',
-                                    style: TextStyle(fontSize: 20),
-                                  ),
-                                  style: ElevatedButton.styleFrom(
-                                    primary: Color.fromRGBO(203, 100, 100, 1),
-                                    onSurface:
-                                        Color.fromRGBO(203, 100, 100, 0.8),
-                                  ),
+                                child: Observer(
+                                  builder: (context) {
+                                    return ElevatedButton(
+                                      onPressed: cadastroStore.isFormValid
+                                          ? () {
+                                              cadastroStore.saveUsuario(
+                                                onSucess: () {
+                                                  Modular.to
+                                                      .pushReplacementNamed(
+                                                          '/home');
+                                                },
+                                                onFail: () {
+                                                  CustomSnackBar(
+                                                      context,
+                                                      'Esse email já está em uso',
+                                                      Colors.red);
+                                                },
+                                              );
+                                            }
+                                          : null,
+                                      child: Text(
+                                        usuario == null
+                                            ? 'Cadastrar'
+                                            : 'Salvar',
+                                        style: TextStyle(fontSize: 20),
+                                      ),
+                                      style: ElevatedButton.styleFrom(
+                                        primary:
+                                            Color.fromRGBO(203, 100, 100, 1),
+                                        onSurface:
+                                            Color.fromRGBO(203, 100, 100, 0.8),
+                                      ),
+                                    );
+                                  },
                                 ))
                           ],
                         ),

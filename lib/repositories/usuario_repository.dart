@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:crypto/crypto.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:teste_jukebox/models/usuario.dart';
 
@@ -11,12 +12,20 @@ class UsuarioRepository {
   static const String TABELA = "usuarios";
 
   void setHash(String hash) {
+    if (kIsWeb) {
+      hash = '875ad27222b843f9a1691d989d6ddca0';
+      return;
+    }
     SharedPreferences.getInstance().then((prefs) {
       prefs.setString('hash', hash);
     });
   }
 
   void getHash() {
+    if (kIsWeb) {
+      hash = '875ad27222b843f9a1691d989d6ddca0';
+      return;
+    }
     SharedPreferences.getInstance().then((prefs) {
       if (prefs.containsKey('hash'))
         hash = prefs.getString('hash');
