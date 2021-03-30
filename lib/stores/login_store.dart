@@ -52,7 +52,7 @@ abstract class _LoginStore with Store {
   bool get senhaValid => senha != null && senha.length > 5;
 
   @computed
-  Function get isFormValid => emailValid && senhaValid ? checkLogin : null;
+  bool get isFormValid => emailValid && senhaValid;
 
   @computed
   String get senhaError {

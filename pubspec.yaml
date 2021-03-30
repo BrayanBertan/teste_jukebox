@@ -31,6 +31,11 @@ dependencies:
   dio: ^3.0.10
   crypto: ^3.0.0
   flutter_custom_clippers: ^1.1.2
+  intl: ^0.17.0
+  datetime_picker_formfield: ^2.0.0
+  shared_preferences: ^2.0.5
+  flutter_localizations:
+    sdk: flutter
 
 
   # The following adds the Cupertino Icons font to your application.

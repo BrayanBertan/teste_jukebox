@@ -65,11 +65,11 @@ mixin _$CadastroStore on _CadastroStore, Store {
           Computed<String>(() => super.senhaConfirmacaoError,
               name: '_CadastroStore.senhaConfirmacaoError'))
       .value;
-  Computed<Function> _$isFormValidComputed;
+  Computed<bool> _$isFormValidComputed;
 
   @override
-  Function get isFormValid =>
-      (_$isFormValidComputed ??= Computed<Function>(() => super.isFormValid,
+  bool get isFormValid =>
+      (_$isFormValidComputed ??= Computed<bool>(() => super.isFormValid,
               name: '_CadastroStore.isFormValid'))
           .value;
 
@@ -182,8 +182,9 @@ mixin _$CadastroStore on _CadastroStore, Store {
   final _$saveUsuarioAsyncAction = AsyncAction('_CadastroStore.saveUsuario');
 
   @override
-  Future<void> saveUsuario() {
-    return _$saveUsuarioAsyncAction.run(() => super.saveUsuario());
+  Future<void> saveUsuario({VoidCallback onSucess, VoidCallback onFail}) {
+    return _$saveUsuarioAsyncAction
+        .run(() => super.saveUsuario(onSucess: onSucess, onFail: onFail));
   }
 
   final _$_CadastroStoreActionController =

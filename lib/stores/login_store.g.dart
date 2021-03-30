@@ -30,11 +30,11 @@ mixin _$LoginStore on _LoginStore, Store {
       (_$senhaValidComputed ??= Computed<bool>(() => super.senhaValid,
               name: '_LoginStore.senhaValid'))
           .value;
-  Computed<Function> _$isFormValidComputed;
+  Computed<bool> _$isFormValidComputed;
 
   @override
-  Function get isFormValid =>
-      (_$isFormValidComputed ??= Computed<Function>(() => super.isFormValid,
+  bool get isFormValid =>
+      (_$isFormValidComputed ??= Computed<bool>(() => super.isFormValid,
               name: '_LoginStore.isFormValid'))
           .value;
   Computed<String> _$senhaErrorComputed;

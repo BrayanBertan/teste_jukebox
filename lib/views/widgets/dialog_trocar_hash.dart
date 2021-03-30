@@ -26,7 +26,6 @@ class DialogTrocarHash extends StatelessWidget {
                 ),
                 TextField(
                   controller: hashController,
-                  obscureText: true,
                   decoration: InputDecoration(
                       border: const OutlineInputBorder(),
                       labelText: 'Hash',

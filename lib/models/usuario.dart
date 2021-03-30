@@ -5,7 +5,12 @@ class Usuario {
   String senha;
   DateTime dataNascimento;
 
-  Usuario({this.id, this.nome, this.email, this.senha, this.dataNascimento});
+  Usuario(
+      {this.id,
+      this.nome = '',
+      this.email = '',
+      this.senha = '',
+      this.dataNascimento});
 
   Map<String, dynamic> tojson() {
     return {

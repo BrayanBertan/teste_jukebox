@@ -1,21 +1,27 @@
 import 'dart:convert';
 
 import 'package:crypto/crypto.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:mobx/mobx.dart';
 import 'package:teste_jukebox/helpers/extensions.dart';
 import 'package:teste_jukebox/models/usuario.dart';
 import 'package:teste_jukebox/repositories/usuario_repository.dart';
+import 'package:teste_jukebox/stores/login_store.dart';
 
 part 'cadastro_store.g.dart';
 
 class CadastroStore = _CadastroStore with _$CadastroStore;
 
 abstract class _CadastroStore with Store {
-  _UsuarioStore({Usuario param}) {
+  _CadastroStore(Usuario param) {
     usuarioRepository = Modular.get<UsuarioRepository>();
     loading = false;
-    usuario = param;
+    if (param == null)
+      usuario = Usuario();
+    else
+      usuario = param;
+
     emailExistenteError = null;
   }
 
@@ -112,32 +118,37 @@ abstract class _CadastroStore with Store {
   }
 
   @computed
-  Function get isFormValid =>
-      nomeValid && senhaValid && senhaConfirmacaoValid && emailValid
-          ? saveUsuario
-          : null;
+  bool get isFormValid =>
+      nomeValid && senhaValid && senhaConfirmacaoValid && emailValid;
 
   @action
-  Future<void> saveUsuario() async {
+  Future<void> saveUsuario({VoidCallback onSucess, VoidCallback onFail}) async {
+    loading = true;
     try {
-      loading = true;
-      final response = await usuarioRepository.checkEmail(email);
-      if (response != null)
-        emailExistenteError = 'Email já cadastrado';
-       else {
-        usuario.nome = nome;
-        usuario.email = email;
-        usuario.senha = md5.convert(utf8.encode(senha)).toString();
-        usuario.dataNascimento = dataNascimento;
-        if (usuario.id == null)
+      usuario.nome = nome;
+      usuario.email = email;
+      usuario.senha = md5.convert(utf8.encode(senha)).toString();
+      usuario.dataNascimento = dataNascimento;
+
+      if (usuario.id == null) {
+        final response = await usuarioRepository.checkEmail(usuario.email);
+
+        if (response == null) {
           await usuarioRepository.postUsuario(usuario);
-        else
-          await usuarioRepository.putUsuario(usuario);
+          Modular.get<LoginStore>().usuario = usuario;
+          onSucess();
+        } else
+          onFail();
+      } else {
+        await usuarioRepository.putUsuario(usuario);
+        Modular.get<LoginStore>().usuario = usuario;
+        onSucess();
+        onSucess();
       }
-      loading = false;
     } catch (erro) {
       print(erro);
     }
+    loading = false;
   }
 
   void deleteUsuario(String id) async {

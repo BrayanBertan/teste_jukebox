@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:teste_jukebox/repositories/usuario_repository.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -10,6 +11,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
+    Modular.get<UsuarioRepository>().getHash();
     Future.delayed(Duration(milliseconds: 500))
         .then((value) => Modular.to.pushReplacementNamed('/login'));
   }

@@ -2,12 +2,30 @@ import 'dart:convert';
 
 import 'package:crypto/crypto.dart';
 import 'package:dio/dio.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:teste_jukebox/models/usuario.dart';
 
 class UsuarioRepository {
   static const String _BASE_URL = "https://crudcrud.com/api";
-  static String hash = "4d75bd94be32484187b209b07fc05966";
+  static String hash;
   static const String TABELA = "usuarios";
+
+  void setHash(String hash) {
+    SharedPreferences.getInstance().then((prefs) {
+      prefs.setString('hash', hash);
+    });
+  }
+
+  void getHash() {
+    SharedPreferences.getInstance().then((prefs) {
+      if (prefs.containsKey('hash'))
+        hash = prefs.getString('hash');
+      else {
+        hash = '875ad27222b843f9a1691d989d6ddca0';
+        setHash(hash);
+      }
+    });
+  }
 
   Future<List<Usuario>> getAllUsuarios() async {
     String endpoint = '$_BASE_URL/$hash/$TABELA';
@@ -64,7 +82,7 @@ class UsuarioRepository {
 
   Future<Usuario> checkEmail(String email) async {
     List<Usuario> response = await getAllUsuarios();
-    final usuarios = response.where((usuario) => usuario.email == email);
+    final usuarios = response.where((usuario) => usuario.email == email.trim());
     if (usuarios.length > 0)
       return usuarios.first;
     else
