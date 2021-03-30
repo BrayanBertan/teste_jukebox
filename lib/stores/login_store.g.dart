@@ -31,6 +31,21 @@ mixin _$LoginStore on _LoginStore, Store {
               name: '_LoginStore.isFormValid'))
           .value;
 
+  final _$loadingAtom = Atom(name: '_LoginStore.loading');
+
+  @override
+  bool get loading {
+    _$loadingAtom.reportRead();
+    return super.loading;
+  }
+
+  @override
+  set loading(bool value) {
+    _$loadingAtom.reportWrite(value, super.loading, () {
+      super.loading = value;
+    });
+  }
+
   final _$emailAtom = Atom(name: '_LoginStore.email');
 
   @override
@@ -61,6 +76,28 @@ mixin _$LoginStore on _LoginStore, Store {
     });
   }
 
+  final _$loginErrorAtom = Atom(name: '_LoginStore.loginError');
+
+  @override
+  String get loginError {
+    _$loginErrorAtom.reportRead();
+    return super.loginError;
+  }
+
+  @override
+  set loginError(String value) {
+    _$loginErrorAtom.reportWrite(value, super.loginError, () {
+      super.loginError = value;
+    });
+  }
+
+  final _$checkLoginAsyncAction = AsyncAction('_LoginStore.checkLogin');
+
+  @override
+  Future<void> checkLogin() {
+    return _$checkLoginAsyncAction.run(() => super.checkLogin());
+  }
+
   final _$_LoginStoreActionController = ActionController(name: '_LoginStore');
 
   @override
@@ -86,21 +123,12 @@ mixin _$LoginStore on _LoginStore, Store {
   }
 
   @override
-  Future<void> checkLogin() {
-    final _$actionInfo = _$_LoginStoreActionController.startAction(
-        name: '_LoginStore.checkLogin');
-    try {
-      return super.checkLogin();
-    } finally {
-      _$_LoginStoreActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
   String toString() {
     return '''
+loading: ${loading},
 email: ${email},
 senha: ${senha},
+loginError: ${loginError},
 emailValid: ${emailValid},
 emailError: ${emailError},
 isFormValid: ${isFormValid}

@@ -11,7 +11,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     Future.delayed(Duration(milliseconds: 500))
-        .then((value) => Modular.to.pushReplacementNamed('/home'));
+        .then((value) => Modular.to.pushReplacementNamed('/login'));
   }
 
   @override
@@ -24,7 +24,7 @@ class _SplashScreenState extends State<SplashScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              Image.asset('assets/images/splash-screen.gif'),
+              Image.asset('assets/images/splash-screen.png'),
               Text(
                 'Teste Jukebox',
                 style: TextStyle(

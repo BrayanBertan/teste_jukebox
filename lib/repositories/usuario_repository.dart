@@ -51,14 +51,15 @@ class UsuarioRepository {
     }
   }
 
-  Future<bool> checkLogin(String email, String senha) async {
+  Future<Usuario> checkLogin(String email, String senha) async {
     List<Usuario> response = await getAllUsuarios();
-    return response
-            .where((usuario) =>
-                usuario.email == email &&
-                usuario.senha == md5.convert(utf8.encode(senha)).toString())
-            .length >
-        0;
+    final usuarios = response.where((usuario) =>
+        usuario.email == email &&
+        usuario.senha == md5.convert(utf8.encode(senha)).toString());
+    if (usuarios.length > 0)
+      return usuarios.first;
+    else
+      return null;
   }
 
   Future<bool> checkEmail(String email) async {
