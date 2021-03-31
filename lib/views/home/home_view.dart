@@ -6,6 +6,7 @@ import 'package:teste_jukebox/stores/cadastro_store.dart';
 import 'package:teste_jukebox/stores/login_store.dart';
 import 'package:teste_jukebox/stores/usuario_store.dart';
 import 'package:teste_jukebox/views/home/widgets/usuario_item.dart';
+import 'package:teste_jukebox/views/widgets/dialog_trocar_hash.dart';
 import 'package:teste_jukebox/views/widgets/logout.dart';
 
 class HomePage extends StatelessWidget {
@@ -18,7 +19,19 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(Modular.get<LoginStore>().usuario.nome),
-        actions: [LogoutIconButton()],
+        actions: [
+          TextButton(
+            onPressed: () {
+              showDialog(
+                  context: context, builder: (context) => DialogTrocarHash());
+            },
+            child: Text(
+              'Mudar hash',
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+          LogoutIconButton()
+        ],
       ),
       body: Align(
           alignment: isSmallDevice ? Alignment.topCenter : Alignment.center,
