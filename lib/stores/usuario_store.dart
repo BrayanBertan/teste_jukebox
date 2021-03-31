@@ -51,6 +51,7 @@ abstract class _UsuarioStore with Store {
       usuarioList.clear();
       final response = await usuarioRepository.getAllUsuarios();
       usuarioList.addAll(response);
+      pesquisar();
       loading = false;
     } catch (erro) {
       print(erro);

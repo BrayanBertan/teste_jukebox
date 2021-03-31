@@ -111,6 +111,7 @@ class _LoginPageState extends State<LoginPage> {
                                 ),
                                 TextButton(
                                   onPressed: () {
+                                    loginStore.senha = null;
                                     loginStore.emailValid
                                         ? showDialog(
                                             context: context,

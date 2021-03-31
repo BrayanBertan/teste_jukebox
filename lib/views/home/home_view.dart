@@ -100,7 +100,7 @@ class HomePage extends StatelessWidget {
                                 })
                             : Center(
                                 child: Text(
-                                  'Nenhum usuario cadastrado',
+                                  'Nenhum usuário cadastrado',
                                   style: TextStyle(fontSize: 30),
                                 ),
                               );

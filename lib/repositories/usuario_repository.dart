@@ -13,7 +13,7 @@ class UsuarioRepository {
 
   void setHash(String hash) {
     if (kIsWeb) {
-      hash = 'cb8daa2b074b41aa95fc6978f6926b24';
+      hash = 'f87730dd0d144c0e93e7f9f3a2064f2a';
       return;
     }
     SharedPreferences.getInstance().then((prefs) {
@@ -23,14 +23,14 @@ class UsuarioRepository {
 
   void getHash() {
     if (kIsWeb) {
-      hash = 'cb8daa2b074b41aa95fc6978f6926b24';
+      hash = 'f87730dd0d144c0e93e7f9f3a2064f2a';
       return;
     }
     SharedPreferences.getInstance().then((prefs) {
       if (prefs.containsKey('hash'))
         hash = prefs.getString('hash');
       else {
-        hash = 'cb8daa2b074b41aa95fc6978f6926b24';
+        hash = 'f87730dd0d144c0e93e7f9f3a2064f2a';
         setHash(hash);
       }
     });
