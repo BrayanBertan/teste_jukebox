@@ -25,7 +25,7 @@ class CadastroPage extends StatelessWidget {
     double screenHeight = ResponsiveWrapper.of(context).screenHeight;
     return Scaffold(
       appBar: AppBar(
-        title: Text('Teste Jokebox'),
+        title: Text('Teste Jukebox'),
         actions: [
           usuario == null ? Container() : LogoutIconButton(),
         ],

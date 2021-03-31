@@ -24,7 +24,7 @@ class _LoginPageState extends State<LoginPage> {
     double screenHeight = ResponsiveWrapper.of(context).screenHeight;
     return Scaffold(
       appBar: AppBar(
-        title: Text('Teste Jokebox'),
+        title: Text('Teste Jukebox'),
         centerTitle: true,
       ),
       body: Stack(
