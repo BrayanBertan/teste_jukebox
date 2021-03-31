@@ -77,7 +77,7 @@ abstract class _LoginStore with Store {
       print(usuario);
 
       if (usuario == null) {
-        loginError = 'Credencias inválidas';
+        loginError = 'Credenciais inválidas';
         onFail();
       } else {
         loginError = null;
